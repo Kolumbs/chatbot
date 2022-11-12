@@ -1,0 +1,4 @@
+pylint
+membank
+rapidfuzz
+build
