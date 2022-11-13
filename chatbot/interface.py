@@ -8,10 +8,10 @@ Main chat interface that external modules interact with
 >>> bot.ask(chat.Message("Hello"))
 >>> bot.close() # Important to call this, to close any resources opened related to memory
 """
+import importlib
 import membank
 from rapidfuzz import process
 
-from . import helpers
 from .api import Interface, Message, Conversation, Package
 
 
@@ -19,7 +19,7 @@ from .api import Interface, Message, Conversation, Package
 class Chat():
     """Interface for communication and routing with talker"""
 
-    def __init__(self, talker, callback, interfaces=tuple(), path=None, conf=None):
+    def __init__(self, talker, callback, conf=None, path=None):
         """
         Initialise comm interface with talker, one instance per talker
 
@@ -28,17 +28,15 @@ class Chat():
 
         Callback must be a callable that accepts Message as only argument
 
+        Conf is dictionary containing configuration for any additional extensions to be
+        loaded and also possibly configurations to those extensions.
+
         If path is not set, Chat instance will hold memories of ongoing chats
         with talker only in the instance itself, closing instance will render all previous
         conversations forgotten. In such cases Chat instance per talker should be
         kept alive as long as possible. if path is set, it must lead to valid path
         for Chat instance to be able to store it's persistent memory, then
         history of talker conversations will be preserved upon instance destructions.
-
-        Conf is optional pass-through dictionary for any commands that require system wide
-        configuration. By default includes set of available interfaces in key 'interfaces'
-
-        Interfaces are additional modules that are supported by chat and to be installed
         """
         self._m = membank.LoadMemory(path)
         self._t = self._m.get.conversation(talker=str(talker))
@@ -47,13 +45,12 @@ class Chat():
                 talker = str(talker),
             )
         self._callback = callback
-        if conf and "interfaces" in conf:
-            raise RuntimeError("Name 'interfaces' is reserved and can't be used in conf")
         self._conf = conf if conf else {}
         self._commands = {}
-        interfaces += (helpers, )
-        for i in interfaces:
-            self.load_interface(i)
+        if "extensions" in self._conf:
+            for i in self._conf["extensions"]:
+                self.load_interface(i)
+        self.load_interface("chatbot.helpers") # built-in default interface always added
         self._conf['interfaces'] = self._commands
 
     def close(self):
@@ -114,8 +111,9 @@ class Chat():
 
     def load_interface(self, interface):
         """load additional supported commands into chat interface"""
-        for i in dir(interface):
-            obj = getattr(interface, i)
+        extension = importlib.import_module(interface)
+        for i in dir(extension):
+            obj = getattr(extension, i)
             if isinstance(obj, type) and issubclass(obj, Interface):
                 obj = obj(self._conf)
                 for cmd in obj.aliases:
