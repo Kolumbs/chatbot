@@ -115,7 +115,11 @@ class Chat():
         for i in dir(extension):
             obj = getattr(extension, i)
             if isinstance(obj, type) and issubclass(obj, Interface):
-                obj = obj(self._conf)
+                if interface in self._conf:
+                    conf = self._conf[interface]
+                else:
+                    conf = {}
+                obj = obj(conf)
                 for cmd in obj.aliases:
                     if cmd in self._commands:
                         raise RuntimeError(f"Clash of interfaces! '{cmd}' already loaded")

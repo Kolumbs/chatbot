@@ -21,10 +21,11 @@ class Interface(unittest.TestCase):
     def test(self):
         """standard interface call should work"""
         callback = MagicMock()
-        conf = {"extensions": ["tests._example"]}
+        conf = {"extensions": ["tests._example"], "tests._example": {"path": True}}
         bot = chatbot.Chat("unique_talker_id", callback, conf=conf)
         callback.assert_not_called()
         bot.greet()
         callback.assert_called()
         bot.ask(chatbot.Message("Hello"))
+        bot.ask(chatbot.Message("example"))
         bot.close() # Important to call this, to close any resources opened related to memory
