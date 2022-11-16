@@ -50,8 +50,8 @@ class Chat():
         if "extensions" in self._conf:
             for i in self._conf["extensions"]:
                 self.load_interface(i)
+        self._conf['chatbot.helpers'] = {"interfaces": self._commands}
         self.load_interface("chatbot.helpers") # built-in default interface always added
-        self._conf['interfaces'] = self._commands
 
     def close(self):
         """when membank supports close this should close it"""

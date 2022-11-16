@@ -9,4 +9,4 @@ class Sample(Interface):
     def consume(self, package):
         if "path" not in self.conf:
             raise RuntimeError("Path must be configured")
-        Interface.consume(self, package)
+        package.callback("example")

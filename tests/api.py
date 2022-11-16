@@ -18,14 +18,23 @@ class Message(unittest.TestCase):
 class Interface(unittest.TestCase):
     """Testcase on entry Testcase"""
 
+    def setUp(self):
+        self.callback = MagicMock()
+
+    def assert_called_with(self, *args):
+        for arg in args:
+            self.callback.assert_called_with(chatbot.Message(arg))
+
     def test(self):
         """standard interface call should work"""
-        callback = MagicMock()
         conf = {"extensions": ["tests._example"], "tests._example": {"path": True}}
-        bot = chatbot.Chat("unique_talker_id", callback, conf=conf)
-        callback.assert_not_called()
+        bot = chatbot.Chat("unique_talker_id", self.callback, conf=conf)
+        self.callback.assert_not_called()
         bot.greet()
-        callback.assert_called()
-        bot.ask(chatbot.Message("Hello"))
+        self.assert_called_with("I can do few things. Ask me for example to play games or do accounting.")
+        self.callback.reset_mock()
         bot.ask(chatbot.Message("example"))
+        self.assert_called_with("example")
+        self.callback.reset_mock()
+        bot.ask(chatbot.Message("help"))
         bot.close() # Important to call this, to close any resources opened related to memory
