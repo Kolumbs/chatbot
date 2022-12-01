@@ -22,6 +22,7 @@ class Interface(unittest.TestCase):
         self.callback = MagicMock()
 
     def assert_called_with(self, *args):
+        """check for mock call"""
         for arg in args:
             self.callback.assert_called_with(chatbot.Message(arg))
 
@@ -31,7 +32,7 @@ class Interface(unittest.TestCase):
         bot = chatbot.Chat("unique_talker_id", self.callback, conf=conf)
         self.callback.assert_not_called()
         bot.greet()
-        self.assert_called_with("I can do few things. Ask me for example to play games or do accounting.")
+        self.callback.assert_called()
         self.callback.reset_mock()
         bot.ask(chatbot.Message("example"))
         self.assert_called_with("example")

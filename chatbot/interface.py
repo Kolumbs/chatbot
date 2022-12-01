@@ -62,11 +62,10 @@ class Chat():
         if self.ongoing:
             self._call("Hey. What would you like me to do?")
         else:
-            msg = "Hello! I am bot and I represent company "
-            msg += "that made me and can make others similar to me."
+            msg = "Hello!"
             self._call(msg)
             msg = "I can do few things. Ask me for example "
-            msg += "to play games or do accounting."
+            msg += "to play games or something."
             self._call(msg)
             self.ongoing = True
 
