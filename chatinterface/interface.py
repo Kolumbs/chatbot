@@ -50,7 +50,7 @@ class Chat():
         if "extensions" in self._conf:
             for i in self._conf["extensions"]:
                 self.load_interface(i)
-        self._conf['chatbot.helpers'] = {"interfaces": self._commands}
+        self._conf['chatinterface.helpers'] = {"interfaces": self._commands}
         self.load_interface("chatbot.helpers") # built-in default interface always added
 
     def close(self):
