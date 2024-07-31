@@ -1,5 +1,5 @@
 """This is example module to load as extension"""
-from chatbot import Interface
+from chatinterface import Interface
 
 
 class Sample(Interface):

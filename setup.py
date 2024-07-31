@@ -8,7 +8,11 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
     setuptools.setup(
         name="chatinterface",
+<<<<<<< Updated upstream
         version="0.0.7",
+=======
+        version="0.0.8",
+>>>>>>> Stashed changes
         author="Juris Kaminskis",
         author_email="juris@kolumbs.net",
         description="Chatbot implementation",

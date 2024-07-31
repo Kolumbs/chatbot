@@ -4,7 +4,7 @@ Tests on chatbot public interface
 import unittest
 from unittest.mock import MagicMock
 
-import chatbot
+import chatinterface as chatbot
 
 
 class Message(unittest.TestCase):
