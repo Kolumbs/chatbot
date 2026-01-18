@@ -1,12 +1,10 @@
-"""Module that allows to build and extend chatbot
+"""Runs simple chatbot."""
 
-Usage:
-    -> interface.Chat or just Chat to interact with bot
-        With the interface.Chat additional extension modules are loaded
-    -> api for extending ChatBot
-        With the api help classes extension modules are built
-"""
+import os
+
 import membank
 
-from .api import Interface, Message, Conversation, Package
-from .interface import Chat
+os.environ["OPENAI_DEFAULT_MODEL"] = "gpt-5-nano"
+
+
+__all__ = ["membank"]
