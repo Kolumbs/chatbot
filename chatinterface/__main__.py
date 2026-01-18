@@ -31,7 +31,7 @@ if __name__ == "__main__":
     zoozl_cfg = {
         "memory_path": f'sqlite://{config["chatbot"]["database"]}',
         "extensions": ["chatinterface.plugin"],
-        "chatbot": chatbot_cfg["chatbot"],
+        "chatbot": chatbot_cfg,
     }
     if "log_level" in chatbot_cfg:
         zoozl_cfg["log_level"] = chatbot_cfg["log_level"]
