@@ -50,7 +50,7 @@ class Session(SQLiteSession):
 class Chatbot(Interface):
     """Chatbot interface to zoozl."""
 
-    aliases = {"chatbot", "help", "greet"}
+    aliases = {"chatbot", "help"}
 
     def load(self, root: InterfaceRoot):
         """Load OpenAI agents."""

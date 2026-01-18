@@ -35,6 +35,8 @@ if __name__ == "__main__":
     }
     if "log_level" in chatbot_cfg:
         zoozl_cfg["log_level"] = chatbot_cfg["log_level"]
+    if "auth_required" in chatbot_cfg:
+        zoozl_cfg["auth_required"] = chatbot_cfg["auth_required"]
     if "websocket" in chatbot_cfg:
         if "port" in chatbot_cfg["websocket"]:
             zoozl_cfg["websocket_port"] = chatbot_cfg["websocket"]["port"]
